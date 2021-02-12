@@ -7,6 +7,7 @@ provider:
   environment:
     SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
     SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN}
+    AIRTABLE_KEY: ${env:AIRTABLE_KEY}
 functions:
   slack:
     handler: app.handler
