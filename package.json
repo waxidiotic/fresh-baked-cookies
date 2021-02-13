@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:proxy": "ngrok http 3000",
+    "dev:serverless": "npx serverless offline --noPrependStageInUrl"
   },
   "keywords": [],
   "author": "",
