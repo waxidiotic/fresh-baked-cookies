@@ -1,6 +1,7 @@
 const { App, ExpressReceiver } = require('@slack/bolt');
 const awsServerlessExpress = require('aws-serverless-express');
 const Airtable = require('airtable');
+const { validateCommand } = require('./utils');
 const db = new Airtable({ apiKey: process.env.AIRTABLE_KEY }).base('appAbE6sLr0xGaNw9');
 
 const expressReceiver = new ExpressReceiver({
@@ -31,7 +32,7 @@ app.command('/cookies', async ({command, client, ack, say}) => {
 
   // validate items
 
-  console.log(command);
+  console.log(await validateCommand(command.text));
 
   // get recipient
 
