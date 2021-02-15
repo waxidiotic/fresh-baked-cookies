@@ -1,11 +1,13 @@
-const COMMAND_REGEX = /(give|send)\s(?:<@(.+(?=\|)))(?:.*)\s([1-5])/g;
+const COMMAND_REGEX = /(give|send)\s(?:<@(.+(?=\|)))(?:.*)\s([1-9])/g;
 
-const validateCommand = async (str) => {
+const validateCommand = (str) => {
   return COMMAND_REGEX.test(str);
 };
 
-const getRecipient = () => {
-  // parse user id from <USER_ID|USER_NAME> where the | and USER_NAME may NOT be present
+const getParts = (str) => {
+  const [_command, action, recipient, quantity] = [...str.matchAll(COMMAND_REGEX)][0];
+  console.log(recipient, quantity);
+  return { action, recipient, quantity: Number(quantity) };
 }
 
-module.exports = { validateCommand, getRecipient };
+module.exports = { validateCommand, getParts };
