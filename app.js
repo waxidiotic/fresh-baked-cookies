@@ -43,7 +43,7 @@ app.command('/cookies', async ({command, client, ack, say}) => {
   // Alter sender
   db('Count')
     .select({filterByFormula: `{Slack ID} = "${command.user_id}"`})
-    .eachPage(function page(records) {
+    .eachPage(async function page(records) {
       const user = records[0];
 
       if (!user) {
@@ -54,14 +54,17 @@ app.command('/cookies', async ({command, client, ack, say}) => {
           "Cookies Given": quantity,
         }});
       } else {
+        console.log(user.get('Cookies Given'));
+        console.log(quantity);
         db('Count').update(user.id, { "Cookies Given": user.get('Cookies Given') + quantity });
+        say(`You have given ${recipientProfile.real_name_normalized} ${quantity} cookie${quantity > 1 ? 's.' : '.' } Aren't you the best?`);
       }
   });
 
   // Alter recipient
   db('Count')
     .select({filterByFormula: `{Slack ID} = "${recipient}"`})
-    .eachPage(function page(records) {
+    .eachPage(async function page(records) {
       const user = records[0];
 
       if (!user) {
@@ -73,6 +76,10 @@ app.command('/cookies', async ({command, client, ack, say}) => {
         }});
       } else {
         db('Count').update(user.id, { "Cookies Received": user.get('Cookies Received') + quantity });
+        await client.chat.postMessage({
+          channel: recipient,
+          text: `Good news! ${senderProfile.real_name_normalized} sent you ${quantity} cookie${quantity > 1 ? 's!!' : '!!' }`
+        })
       }
   });
 
